@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Comic Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 AI Comic Generator</h1>
+        
+        <!-- Service Status Indicators -->
+        <div class="status-section">
+            <div class="status-item">
+                <div class="status-indicator" id="ollamaStatus">
+                    <div class="status-ball checking"></div>
+                    <span>Ollama LLM</span>
+                </div>
+            </div>
+            <div class="status-item">
+                <div class="status-indicator" id="comfyuiStatus">
+                    <div class="status-ball checking"></div>
+                    <span>ComfyUI</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="input-section">
+            <textarea id="prompt" placeholder="Describe your comic story..."></textarea>
+            
+            <div class="options-grid">
+                <div class="option-group">
+                    <label>Style</label>
+                    <select id="style">
+                        <option value="anime">Anime</option>
+                        <option value="cartoon">Cartoon</option>
+                        <option value="realistic">Realistic</option>
+                        <option value="manga">Manga</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label>Page Format</label>
+                    <select id="pageFormat">
+                        <option value="a4p">A4 - Portrait</option>
+                        <option value="a4l">A4 - Landscape</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label>Layout Preset</label>
+                    <select id="layout">
+                        <option value="Layout0">2×2 grid (4 equal)</option>
+                        <option value="Layout1">Tall middle columns</option>
+                        <option value="Layout2">Right column tall</option>
+                        <option value="Layout3">Wide top + mixed right</option>
+                        <option value="Layout5">Stacked big bottom (5 panels)</option>
+                    </select>
+                </div>
+                
+                <div class="option-group">
+                    <label>Outer Margin (px)</label>
+                    <input type="number" id="margin" min="0" max="80" value="24">
+                </div>
+                
+                <div class="option-group">
+                    <label>Gutter (px)</label>
+                    <input type="number" id="gutter" min="0" max="48" value="8">
+                </div>
+            </div>
+            
+            <div class="layout-preview-section">
+                <div class="preview-header">
+                    <h3>Layout Preview (A4 ratio)</h3>
+                    <label class="debug-toggle">
+                        <input type="checkbox" id="showOutlines"> Debug background
+                    </label>
+                </div>
+                <div id="layoutPreview" class="layout-preview-container">
+                    <!-- Layout preview will be rendered here -->
+                </div>
+            </div>
+            
+            <button id="generateBtn" onclick="generateComic()">Generate Comic</button>
+        </div>
+        
+        <div id="progress" class="progress hidden">
+            <div class="spinner"></div>
+            <p id="status">Initializing...</p>
+        </div>
+        
+        <div id="preview" class="preview-section hidden">
+            <h2>Panel Descriptions</h2>
+            <div id="panelList"></div>
+        </div>
+        
+        <div id="result" class="result-section hidden">
+            <h2>Your Comic</h2>
+            <img id="comicImage" src="" alt="Generated Comic">
+            <button onclick="downloadComic()">Download</button>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
