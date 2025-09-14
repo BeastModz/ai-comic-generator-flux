@@ -1,62 +1,218 @@
-﻿{
-  "1": {
+{
+  "6": {
     "inputs": {
-      "ckpt_name": "flux1-dev-fp8.safetensors"
+      "text": "score_9, score_8_up, score_7_up, cel shading, stylized features, Wide shot of the girl searching the forest floor, with the misty trees looming above her as she calls out for her lost bird, cartoon style, high quality, detailed cartoon style, high quality, detailed cartoon style, high quality, detailed,  ",
+      "clip": [
+        "45",
+        1
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "31",
+        0
+      ],
+      "vae": [
+        "30",
+        2
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE Decode"
+    }
+  },
+  "9": {
+    "inputs": {
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "42",
+        0
+      ]
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  },
+  "27": {
+    "inputs": {
+      "width": 768,
+      "height": 1152,
+      "batch_size": 1
+    },
+    "class_type": "EmptySD3LatentImage",
+    "_meta": {
+      "title": "EmptySD3LatentImage"
+    }
+  },
+  "30": {
+    "inputs": {
+      "ckpt_name": "Op-PonyV2.safetensors"
     },
     "class_type": "CheckpointLoaderSimple",
     "_meta": {
       "title": "Load Checkpoint"
     }
   },
-  "3": {
+  "31": {
     "inputs": {
-      "seed": 156680208700286,
-      "steps": 20,
-      "cfg": 8,
-      "sampler_name": "euler",
-      "scheduler": "normal",
+      "seed": 946018681027795,
+      "steps": 30,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_3m_sde_gpu",
+      "scheduler": "simple",
       "denoise": 1,
-      "model": ["1", 0],
-      "positive": ["6", 0],
-      "negative": ["7", 0],
-      "latent_image": ["5", 0]
+      "model": [
+        "45",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "33",
+        0
+      ],
+      "latent_image": [
+        "27",
+        0
+      ]
     },
-    "class_type": "KSampler"
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "KSampler"
+    }
   },
-  "5": {
+  "33": {
     "inputs": {
-      "width": 512,
-      "height": 768,
-      "batch_size": 1
+      "text": "low quality, blurry, bad anatomy, disfigured, extra limbs, fused fingers, mutated hands:1.2, long body:1.2, poorly drawn face, poorly drawn hands, messy drawing, broken legs, 3d, realistic, black and white, text, watermark, logo, male, earrings, cape, fire, flower, holding objects, phone, beachball, lightsaber, car, boat, basketball, food, drink, cup, candy, lollipop, censor, censored, censor_bar, wings not on back side, anime, source_anime,",
+      "clip": [
+        "45",
+        1
+      ]
     },
-    "class_type": "EmptyLatentImage"
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
   },
-  "6": {
+  "41": {
     "inputs": {
-      "text": "comic panel, high quality",
-      "clip": ["1", 1]
+      "model_name": "4x_foolhardy_Remacri.pth"
     },
-    "class_type": "CLIPTextEncode"
+    "class_type": "UpscaleModelLoader",
+    "_meta": {
+      "title": "Load Upscale Model"
+    }
   },
-  "7": {
+  "42": {
     "inputs": {
-      "text": "low quality, blurry",
-      "clip": ["1", 1]
+      "upscale_by": 1.5,
+      "seed": 442750215968985,
+      "steps": 20,
+      "cfg": 5.5,
+      "sampler_name": "dpmpp_3m_sde_gpu",
+      "scheduler": "simple",
+      "denoise": 0.2,
+      "mode_type": "Linear",
+      "tile_width": 512,
+      "tile_height": 512,
+      "mask_blur": 8,
+      "tile_padding": 32,
+      "seam_fix_mode": "None",
+      "seam_fix_denoise": 1,
+      "seam_fix_width": 64,
+      "seam_fix_mask_blur": 8,
+      "seam_fix_padding": 16,
+      "force_uniform_tiles": true,
+      "tiled_decode": false,
+      "image": [
+        "8",
+        0
+      ],
+      "model": [
+        "30",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "33",
+        0
+      ],
+      "vae": [
+        "30",
+        2
+      ],
+      "upscale_model": [
+        "41",
+        0
+      ]
     },
-    "class_type": "CLIPTextEncode"
+    "class_type": "UltimateSDUpscale",
+    "_meta": {
+      "title": "Ultimate SD Upscale"
+    }
   },
-  "8": {
+  "43": {
     "inputs": {
-      "samples": ["3", 0],
-      "vae": ["1", 2]
+      "filename_prefix": "ComfyUI",
+      "images": [
+        "8",
+        0
+      ]
     },
-    "class_type": "VAEDecode"
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
   },
-  "9": {
+  "45": {
     "inputs": {
-      "filename_prefix": "comic_panel",
-      "images": ["8", 0]
+      "lora_name": "comic_Illustrious.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 1,
+      "model": [
+        "46",
+        0
+      ],
+      "clip": [
+        "46",
+        1
+      ]
     },
-    "class_type": "SaveImage"
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Load LoRA"
+    }
+  },
+  "46": {
+    "inputs": {
+      "lora_name": "Comics_90s_style.safetensors",
+      "strength_model": 0.85,
+      "strength_clip": 1,
+      "model": [
+        "30",
+        0
+      ],
+      "clip": [
+        "30",
+        1
+      ]
+    },
+    "class_type": "LoraLoader",
+    "_meta": {
+      "title": "Load LoRA"
+    }
   }
 }

@@ -44,7 +44,9 @@ class OllamaService:
                         'description': panel.get('description', ''),
                         'dialogue': panel.get('dialogue', ''),
                         'camera_angle': panel.get('camera_angle', 'medium shot'),
-                        'emotion': panel.get('emotion', 'neutral')
+                        'emotion': panel.get('emotion', 'neutral'),
+                        'characters': panel.get('characters', 'main character'),
+                        'setting': panel.get('setting', 'generic scene')
                     })
                 
                 logger.info(f"Generated {len(panels)} panel descriptions")
@@ -64,9 +66,11 @@ class OllamaService:
         for i in range(num_panels):
             panels.append({
                 'index': i,
-                'description': f"Panel {i+1} of story: {prompt}",
+                'description': f"(detailed scene:1.2) Panel {i+1} showing {prompt} with (high quality:1.3) comic art style, detailed background and consistent character design",
                 'dialogue': "",
                 'camera_angle': 'medium shot',
-                'emotion': 'neutral'
+                'emotion': 'neutral',
+                'characters': 'main character',
+                'setting': 'story scene'
             })
         return panels

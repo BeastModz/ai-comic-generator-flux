@@ -21,17 +21,20 @@ class ComicGenerator:
         panel_images = []
         for panel in panels:
             try:
+                # Enhanced prompt with character and setting consistency
+                enhanced_prompt = self._enhance_panel_prompt(panel, panels)
+                
                 image_path = self.comfyui.generate_image(
-                    prompt=panel['description'],
+                    prompt=enhanced_prompt,
                     style=style,
-                    seed=panel['index']
+                    seed=-1  # Use random seed for variety
                 )
                 panel_images.append(image_path)
             except Exception as e:
                 logger.warning(f"ComfyUI unavailable for panel {panel['index']}: {e}")
                 # Create a text placeholder with the prompt
                 placeholder_path = self._create_prompt_placeholder(
-                    panel['description'], 
+                    enhanced_prompt if 'enhanced_prompt' in locals() else panel['description'], 
                     panel['index'], 
                     style
                 )
@@ -41,6 +44,43 @@ class ComicGenerator:
         comic_path = self._assemble_comic(panel_images, layout_preset, page, geometry)
         
         return comic_path
+    
+    def _enhance_panel_prompt(self, current_panel: Dict, all_panels: List[Dict]) -> str:
+        """Enhance panel prompt with consistency elements and weights"""
+        base_description = current_panel['description']
+        
+        # Extract character consistency from all panels
+        character_refs = []
+        for panel in all_panels:
+            chars = panel.get('characters', '')
+            if chars and chars not in character_refs:
+                character_refs.append(chars)
+        
+        # Build consistency prompt elements
+        consistency_elements = []
+        if character_refs:
+            main_character = character_refs[0] if character_refs else "main character"
+            consistency_elements.append(f"(consistent character: {main_character}:1.3)")
+        
+        # Add setting consistency if available
+        setting = current_panel.get('setting', '')
+        if setting:
+            consistency_elements.append(f"(setting: {setting}:1.1)")
+        
+        # Add camera angle emphasis
+        camera_angle = current_panel.get('camera_angle', 'medium shot')
+        consistency_elements.append(f"({camera_angle}:1.2)")
+        
+        # Add emotion/mood emphasis
+        emotion = current_panel.get('emotion', 'neutral')
+        consistency_elements.append(f"({emotion} mood:1.1)")
+        
+        # Combine everything
+        consistency_prefix = ", ".join(consistency_elements)
+        enhanced_prompt = f"{consistency_prefix}, {base_description}"
+        
+        logger.debug(f"Enhanced panel {current_panel['index']} prompt with consistency elements")
+        return enhanced_prompt
     
     def _assemble_comic(self, image_paths: List[str], layout_preset: str, page: str, geometry: Dict = None) -> str:
         """Assemble panels into comic layout"""
